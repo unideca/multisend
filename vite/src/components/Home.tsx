@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import { useNavigate } from "react-router";
 
 const Home : FC = () => {
-    const [imageSrc, setImageSrc] = useState("../public/token_create.webp");
+    const [imageSrc, setImageSrc] = useState("/token_create.webp");
     const navigator = useNavigate();
 
     return (
@@ -58,8 +58,8 @@ const Home : FC = () => {
                     p={0}
                     _hover={{ transform: "scale(1.05)" }}
                     _active={{ transform: "scale(0.95)" }}
-                    onMouseOver={() => setImageSrc("../public/token_create2.webp")}
-                    onMouseOut={() => setImageSrc("../public/token_create.webp")}
+                    onMouseOver={() => setImageSrc("../token_create2.webp")}
+                    onMouseOut={() => setImageSrc("../token_create.webp")}
                     position="absolute"
                     left={12}
                     mb={4}
