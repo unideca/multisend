@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const linkItems = [
-    { name: "토큰 다중 전송", path: "/multi" },
+    { name: "Home", path: "/" },
   ];
 
   return (
