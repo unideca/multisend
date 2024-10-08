@@ -194,10 +194,10 @@ const Multi: FC = () => {
   const checkValidNetwork = () => {
     return networkOptions.some((v) => {
       return v.value === network
-      console.log(v.value);
-      console.log(network);
     }); //value값과 같은 것이 있으면 true 반환 
-  }
+  }// 첫번째 return은 checkValidNetwork 함수 자체가 networkOptions.some()의 결과값을 반환해야 하기 때문에, return 키워드가 필요
+  // 두번째 return은 some() 메서드는 배열의 각 요소에 대해 콜백 함수를 실행
+  // v.value === network라는 비교 결과가 콜백 함수에서 반환되어야 some() 메서드가 해당 조건을 만족하는지 확인 가능
 
   const checkFormat = async () => {
     if (!signer) {
