@@ -13,13 +13,12 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
-  
-    const navigator = useNavigate();
 
+
+  const navigator = useNavigate();
 
   const getSigner = async () => {
     if (!window.ethereum) return;
-
     const provider = new ethers.BrowserProvider(window.ethereum);
     setSigner(await provider.getSigner());
   };
@@ -27,10 +26,11 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
 
   const onClickMetamaskLogin = async () => {
     try {
-      getSigner();
-      localStorage.setItem("isLogin", "true");
+        await getSigner();
+        await window.ethereum.request({method : 'wallet_requestPermissions', params:[{eth_accounts: {}}]});//지갑 허가 다시 받기
+        localStorage.setItem("isLogin", "true");      
     } catch (error) {
-      console.error(error);
+      console.error("onClickMetamaskLogin Error : ",error);
     }
   };
 
@@ -90,7 +90,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
             p={0}
             bgColor="teal"
             w="170px"
-            _hover={{ bgColor: "teal.400" }}
+            _hover={{ bg: "teal.400" }}
             onClick={onClickMetamaskLogin}
           >
             <Text color="white" fontWeight="bold">

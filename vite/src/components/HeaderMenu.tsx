@@ -31,7 +31,7 @@ import {
           bgColor="teal"
           variant="filled"
           w="170px"
-          _hover={{ bgColor: "teal.400" }}
+          _hover={{ bg: "teal.400" }}
         >
           <Text className="styled-text" fontWeight="bold" color="white">
             {text}

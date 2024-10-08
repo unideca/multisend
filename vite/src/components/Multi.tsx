@@ -129,6 +129,11 @@ const Multi: FC = () => {
         showToast("지갑 연결 후 이용해주세요.", "", "error");
         return;
       }
+      if(network === "0xa4b1") {
+        setMultiContract(new Contract(ArbitrumtokenMultisenderCA, tokenMultiContractAbi, signer));
+      } else if(network === "0x38") {
+        setMultiContract(new Contract(BSCtokenMultisenderCA, tokenMultiContractAbi, signer));
+      }
       setTokenContract(new Contract(tokenAddress, erc20Approve ,signer));
     } catch(error) {
       console.error(error);
@@ -510,7 +515,7 @@ const Multi: FC = () => {
                 borderWidth="2px"
                 mt="5"
                 bgColor="teal"
-                _hover={{ bgColor: "teal.400" }}
+                _hover={{ bg: "teal.400" }}
                 color="white"
                 isDisabled={isLoading}
               >
@@ -531,12 +536,12 @@ const Multi: FC = () => {
                   borderWidth="2px"
                   mt="5"
                   bgColor="teal"
-                  _hover={{ bgColor: "teal.400" }}
+                  _hover={{ bg: "teal.400" }}
                   color="white"
                   isDisabled={isLoading}
                 >
                   <TbSend size="20" />
-                  <Text ml="1" _hover="teal.400">
+                  <Text ml="1" _hover={{ color: "teal.400" }}>
                     전송하기
                   </Text>
                 </Button>
