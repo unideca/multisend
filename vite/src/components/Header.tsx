@@ -26,8 +26,9 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
 
   const onClickMetamaskLogin = async () => {
     try {
-        await getSigner();
         await window.ethereum.request({method : 'wallet_requestPermissions', params:[{eth_accounts: {}}]});//지갑 허가 다시 받기
+        await getSigner();
+        //getSigner 함수를 wallet_requestPermissions 아래로 옮김, 변경된 주소가 렌딩이 됨
         localStorage.setItem("isLogin", "true");      
     } catch (error) {
       console.error("onClickMetamaskLogin Error : ",error);
@@ -42,6 +43,11 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
       localStorage.removeItem("isLogin");
     }
   }, []);
+
+  useEffect(() => {
+    if(!signer)return;
+    console.log(signer.address);
+  },[signer])
 
   return (
     <Flex
@@ -80,6 +86,7 @@ const Header: FC<HeaderProps> = ({ signer, setSigner }) => {
         {signer ? (
           <Flex alignItems="center" gap={4}>
             <HeaderMenu
+              key={signer.address}//signer값이 변경되면 컴포넌트 리마운트
               text={`${signer.address.slice(0,5)}...${signer.address.slice(-4)}`}
               menuItem={["마이페이지", "로그아웃"]}
               setSigner={setSigner}
