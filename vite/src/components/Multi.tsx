@@ -355,14 +355,14 @@ const Multi: FC = () => {
     };
   };
 
-  useEffect(() => {
-    getNetwork();
-    if(network === "0x38") {
-      setMultiContract(new Contract(BSCtokenMultisenderCA, tokenMultiContractAbi, signer));
-    } else if(network ==="0xa4b1") {
-      setMultiContract(new Contract(ArbitrumtokenMultisenderCA, tokenMultiContractAbi, signer));
-    }
-  },[signer]); // 첫 렌더링시 현재 네트워크 정보 가져오기
+  // useEffect(() => {
+  //   getNetwork();
+  //   if(network === "0x38") {
+  //     setMultiContract(new Contract(BSCtokenMultisenderCA, tokenMultiContractAbi, signer));
+  //   } else if(network ==="0xa4b1") {
+  //     setMultiContract(new Contract(ArbitrumtokenMultisenderCA, tokenMultiContractAbi, signer));
+  //   }
+  // },[signer]); // 첫 렌더링시 현재 네트워크 정보 가져오기
 
   useEffect(() => {
     console.log(inputValue);
