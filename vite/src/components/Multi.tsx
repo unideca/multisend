@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Input, Select, Text } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Input, Text } from "@chakra-ui/react";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import * as XLSX from "xlsx";
 import MultiInputSet from "../components/MultiInputset";
@@ -14,6 +14,12 @@ import useToastNotification from "../hooks/useToastNotification";
 import { BSCtokenMultisenderCA } from "../lib/contractAddresses";
 import { ArbitrumtokenMultisenderCA } from "../lib/contractAddresses";
 import erc20Approve from "../lib/erc20Approve.json";
+import NetworkSelector from "./NetworkSelector";
+
+const networkOptions = [
+  {name : "Arbitrum", value : "0xa4b1"},
+  {name : "BSC", value : "0x38"},
+];
 
 const Multi: FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Textarea를 참조할 ref
@@ -34,6 +40,7 @@ const Multi: FC = () => {
   const [tokenAddress, setTokenAddress] = useState<string>("");
   const [tokenAmount, setTokenAmount] = useState<bigint>(0n);
   const [tokenName, setTokenName] = useState<string>("");
+  const [isValidNetwork, setIsValidNetwork] = useState<boolean | null>(null);
   const { signer, setSigner } = useOutletContext<OutletContext>();
   const { showToast } = useToastNotification();  
 
@@ -182,6 +189,14 @@ const Multi: FC = () => {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  const checkValidNetwork = () => {
+    return networkOptions.some((v) => {
+      return v.value === network
+      console.log(v.value);
+      console.log(network);
+    }); //value값과 같은 것이 있으면 true 반환 
   }
 
   const checkFormat = async () => {
@@ -355,14 +370,16 @@ const Multi: FC = () => {
     };
   };
 
-  // useEffect(() => {
-  //   getNetwork();
-  //   if(network === "0x38") {
-  //     setMultiContract(new Contract(BSCtokenMultisenderCA, tokenMultiContractAbi, signer));
-  //   } else if(network ==="0xa4b1") {
-  //     setMultiContract(new Contract(ArbitrumtokenMultisenderCA, tokenMultiContractAbi, signer));
-  //   }
-  // },[signer]); // 첫 렌더링시 현재 네트워크 정보 가져오기
+  useEffect(() => {
+    getNetwork();
+  },[signer]); // 첫 렌더링시 현재 네트워크 정보 가져오기
+
+  useEffect(() => {
+    console.log(network);
+    const isValid = checkValidNetwork();
+    console.log(isValid);
+    setIsValidNetwork(isValid);
+  },[network]);
 
   useEffect(() => {
     console.log(inputValue);
@@ -373,14 +390,7 @@ const Multi: FC = () => {
       setExcelValue("");
       setIsTextareaDisable(false);
     }
-  }, [isError]);
-
-  // useEffect(() => {
-  //   setMultiContract(
-  //     new Contract(multisenderContractAddress, multiContractAbi, signer)
-  //   );
-  // }, [signer]);
-  
+  }, [isError]);  
 
   useEffect(() => {
     console.log("multiContract : ",multiContract);
@@ -430,18 +440,7 @@ const Multi: FC = () => {
             <Box fontWeight="bold" fontSize="xl" color="white">
               네트워크 선택
             </Box>
-            <Select
-              mt="4"
-              variant="ghost"
-              borderColor="brand.500"
-              borderWidth="2px"
-              cursor="pointer"
-              value={network}
-              onChange={networkHandler}
-            >
-              <option value="0xa4b1">Arbitrum</option>
-              <option value="0x38">BSC</option>
-            </Select>
+            <NetworkSelector network={network} networkHandler={networkHandler} isValidNetwork={isValidNetwork}/>
           </Flex>
         </Flex>
         <Box mt="4" fontWeight="bold" fontSize="xl" color="white">
